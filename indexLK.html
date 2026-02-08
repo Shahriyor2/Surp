@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Мини-история для Катя 🌸</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        overflow: hidden;
+        background: linear-gradient(135deg, #ffe0f0, #fff0ff);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .step {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.8s ease;
+      }
+      .step.active {
+        display: flex;
+        opacity: 1;
+      }
+
+      h1 {
+        font-size: 2rem;
+        color: #d6336c;
+        margin-bottom: 10px;
+        animation: bounce 1s ease;
+      }
+      @keyframes bounce {
+        0% {
+          transform: scale(0.8);
+        }
+        50% {
+          transform: scale(1.2);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      p {
+        color: #6b2a5e;
+        font-size: 1.2rem;
+        max-width: 350px;
+        margin-bottom: 20px;
+        animation: fadeUp 1s ease;
+      }
+      @keyframes fadeUp {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      img {
+        width: 250px;
+        border-radius: 15px;
+        margin-bottom: 20px;
+        animation: float 3s ease-in-out infinite alternate;
+      }
+      @keyframes float {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(-15px);
+        }
+      }
+
+      button {
+        padding: 12px 24px;
+        font-size: 1.2rem;
+        border: none;
+        border-radius: 25px;
+        background-color: #ff77aa;
+        color: white;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      button:hover {
+        transform: scale(1.1) rotate(-1deg);
+        background-color: #ff4d88;
+      }
+
+      .confetti,
+      .heart {
+        position: absolute;
+        z-index: 999;
+      }
+
+      .confetti {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        opacity: 0.8;
+        animation: confettiFly 3s linear forwards;
+      }
+      @keyframes confettiFly {
+        0% {
+          transform: translate(0, 0) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(calc(-50vw+50%), -100vh) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
+      .game-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+      }
+      .game-box button {
+        margin: 5px;
+      }
+
+      .gif-surprise {
+        width: 250px;
+        margin-top: 20px;
+        border-radius: 15px;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Step 1 -->
+    <div class="step active" id="step1">
+      <h1>Привет, Катя! 😊</h1>
+      <p>
+        Я хочу сказать, что очень ценю твою искренность и то, как ты умеешь
+        радовать своим присутствием 💖
+      </p>
+      <img src="./assets/photo_2026-02-08_22-42-21.jpg" alt="Для тебя ❤️" />
+      <button onclick="nextStep()">Далее</button>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step" id="step2">
+      <h1>Ты необыкновенна! 🌸</h1>
+      <p>
+        Твоя доброта и внимание к мелочам делают мир вокруг теплее. Я всегда рад
+        видеть твою улыбку
+      </p>
+      <button onclick="nextStep()">Далее</button>
+    </div>
+
+    <!-- Step 3: Мини-игра -->
+    <div class="step" id="step3">
+      <h1>Выбери свое настроение!</h1>
+      <div class="game-box">
+        <button onclick="showMessage('Ты приносишь радость каждому дню! 🌸')">
+          Веселая
+        </button>
+        <button onclick="showMessage('Твоя забота необыкновенна! 💖')">
+          Заботливая
+        </button>
+        <button onclick="showMessage('Наблюдательности просто нет слов) ✨')">
+          Наблюдательная
+        </button>
+      </div>
+      <p id="gameMessage"></p>
+      <button onclick="nextStep()">Далее</button>
+    </div>
+
+    <!-- Step 4: Финал -->
+    <div class="step" id="step4">
+      <h1>Спасибо, что ты есть! 🌟</h1>
+      <p>
+        Каждое твое слово и действие оставляют теплый след. Рад, что могу это
+        видеть 🌸
+      </p>
+      <button onclick="showSurprise()">Показать сюрприз!</button>
+      <img
+        src="./assets/AQPD96UPe7hpxe43ROMDQ5jc9T2ix9jL_z7fpJj7UPnrADGvYRWPhWQZ7h_WFHVg2E1Y1Fwwjc9.gif"
+        class="gif-surprise"
+        id="surpriseGif"
+        alt="Сюрприз! 🎉"
+      />
+    </div>
+
+    <script>
+      const steps = document.querySelectorAll(".step");
+      let currentStep = 0;
+
+      function nextStep() {
+        steps[currentStep].classList.remove("active");
+        currentStep++;
+        if (currentStep < steps.length) {
+          steps[currentStep].classList.add("active");
+          // генерируем конфетти на шагах 2 и 4 для красоты
+          if (currentStep === 1 || currentStep === 3) generateConfetti();
+        }
+      }
+
+      // Конфетти
+      function createConfetti() {
+        const colors = ["#FF4D88", "#FFD700", "#FF77AA", "#6C63FF", "#FF6F61"];
+        const confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        confetti.style.backgroundColor =
+          colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.left = Math.random() * window.innerWidth + "px";
+        confetti.style.top = window.innerHeight + "px";
+        confetti.style.width = 10 + Math.random() * 10 + "px";
+        confetti.style.height = 10 + Math.random() * 10 + "px";
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 3000);
+      }
+
+      function generateConfetti() {
+        for (let i = 0; i < 50; i++) {
+          setTimeout(createConfetti, i * 50);
+        }
+      }
+
+      // Мини-игра
+      function showMessage(msg) {
+        const el = document.getElementById("gameMessage");
+        el.style.opacity = 0;
+        el.innerText = msg;
+        setTimeout(() => (el.style.opacity = 1), 50);
+      }
+
+      // Сюрприз (сердечки + конфетти + гифка)
+      function showSurprise() {
+        generateConfetti();
+        for (let i = 0; i < 30; i++) {
+          setTimeout(createHeart, i * 150); // растягиваем по времени, чтобы не налегали
+        }
+        // Показать гифку
+        const gif = document.getElementById("surpriseGif");
+        gif.style.display = "block";
+      }
+
+      function createHeart() {
+        const heart = document.createElement("div");
+        const size = 15 + Math.random() * 15;
+        heart.classList.add("heart");
+        heart.style.width = size + "px";
+        heart.style.height = size + "px";
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.top = window.innerHeight + "px";
+        heart.style.backgroundColor = "red";
+        heart.style.transform = "rotate(-45deg)";
+
+        heart.innerHTML = `<div style="width:${size}px;height:${size}px;border-radius:50%;background:red;position:absolute;top:-${size / 2}px;left:0;"></div>
+                     <div style="width:${size}px;height:${size}px;border-radius:50%;background:red;position:absolute;top:0;left:${size / 2}px;"></div>`;
+        document.body.appendChild(heart);
+
+        const start = Date.now();
+        const duration = 3000;
+        const startX = parseFloat(heart.style.left);
+        const startY = window.innerHeight;
+        const endY = -50;
+
+        function animate() {
+          const now = Date.now();
+          const progress = (now - start) / duration;
+          if (progress < 1) {
+            heart.style.top = startY + (endY - startY) * progress + "px";
+            heart.style.left = startX + 50 * Math.sin(progress * 3) + "px"; // лёгкий зигзаг
+            requestAnimationFrame(animate);
+          } else heart.remove();
+        }
+        animate();
+      }
+    </script>
+  </body>
+</html>
