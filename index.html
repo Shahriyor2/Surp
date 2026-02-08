@@ -2,22 +2,32 @@
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Мини-история для Катя 🌸</title>
     <style>
-      /* --- Основные стили --- */
+      html,
       body {
         margin: 0;
-        font-family: "Segoe UI", sans-serif;
-        overflow: hidden;
+        padding: 0;
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        scrollbar-gutter: stable both-edges; /* предотвращает прыжки контента */
+      }
+
+      body {
+        font-family: "Segoe UI", system-ui, sans-serif;
         background: linear-gradient(135deg, #ffe0f0, #fff0ff);
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
+        min-height: 100vh;
         flex-direction: column;
         text-align: center;
         padding: 1rem;
         box-sizing: border-box;
+        color: #4a1e3e;
+        position: relative;
       }
 
       .step {
@@ -25,25 +35,34 @@
         flex-direction: column;
         align-items: center;
         opacity: 0;
-        transition: opacity 0.8s ease;
+        transition:
+          opacity 0.8s ease,
+          transform 0.8s ease;
+        transform: translateY(20px);
+        width: 100%;
+        max-width: 640px;
       }
+
       .step.active {
         display: flex;
         opacity: 1;
+        transform: translateY(0);
       }
 
       h1 {
-        font-size: 6vw;
+        font-size: clamp(2.3rem, 10vw, 4.8rem);
         color: #d6336c;
-        margin-bottom: 10px;
-        animation: bounce 1s ease;
+        margin: 0.4rem 0 1rem;
+        line-height: 1.1;
+        animation: bounce 1.2s ease;
       }
+
       @keyframes bounce {
         0% {
-          transform: scale(0.8);
+          transform: scale(0.85);
         }
         50% {
-          transform: scale(1.2);
+          transform: scale(1.15);
         }
         100% {
           transform: scale(1);
@@ -51,16 +70,17 @@
       }
 
       p {
-        color: #6b2a5e;
-        font-size: 4vw;
-        max-width: 80vw;
-        margin-bottom: 20px;
-        animation: fadeUp 1s ease;
+        font-size: clamp(1.1rem, 5.8vw, 1.75rem);
+        max-width: 92vw;
+        margin: 0 auto 1.5rem;
+        line-height: 1.45;
+        animation: fadeUp 1.1s ease;
       }
+
       @keyframes fadeUp {
         0% {
           opacity: 0;
-          transform: translateY(20px);
+          transform: translateY(24px);
         }
         100% {
           opacity: 1;
@@ -68,102 +88,75 @@
         }
       }
 
-      img {
-        width: 60vw;
-        max-width: 250px;
-        border-radius: 15px;
-        margin-bottom: 20px;
-        animation: float 3s ease-in-out infinite alternate;
+      img,
+      .gif-surprise {
+        width: clamp(220px, 75vw, 360px);
+        max-width: 92vw;
+        border-radius: 16px;
+        margin: 1rem auto 1.5rem;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
       }
-      @keyframes float {
-        0% {
-          transform: translateY(0);
-        }
-        100% {
-          transform: translateY(-15px);
-        }
+
+      .gif-surprise {
+        display: none;
       }
 
       button {
-        padding: 3vw 6vw;
-        font-size: 4vw;
+        font-size: clamp(1.1rem, 6vw, 1.45rem);
+        padding: clamp(0.9rem, 4.5vw, 1.2rem) clamp(1.8rem, 8vw, 2.4rem);
         border: none;
-        border-radius: 25px;
-        background-color: #ff77aa;
+        border-radius: 999px;
+        background: #ff77aa;
         color: white;
+        font-weight: 600;
         cursor: pointer;
-        transition: 0.3s;
-        margin-top: 1rem;
+        transition: all 0.28s ease;
+        margin: 0.8rem 0.4rem;
+        box-shadow: 0 4px 12px rgba(255, 119, 170, 0.4);
       }
+
       button:hover {
-        transform: scale(1.1) rotate(-1deg);
-        background-color: #ff4d88;
+        transform: scale(1.08) translateY(-2px);
+        background: #ff4d88;
+        box-shadow: 0 8px 20px rgba(255, 77, 136, 0.5);
       }
 
-      /* Конфетти и сердечки */
-      .confetti,
-      .heart {
-        position: absolute;
-        z-index: 999;
-      }
-      .confetti {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        opacity: 0.8;
-        animation: confettiFly 3s linear forwards;
-      }
-      @keyframes confettiFly {
-        0% {
-          transform: translate(0, 0) rotate(0deg);
-          opacity: 1;
-        }
-        100% {
-          transform: translate(calc(-50vw+50%), -100vh) rotate(360deg);
-          opacity: 0;
-        }
-      }
-
-      /* Мини-игра */
       .game-box {
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-top: 20px;
+        gap: 0.8rem;
+        margin: 1.5rem 0;
+        width: 100%;
       }
+
       .game-box button {
-        margin: 5px;
-        font-size: 4vw;
-        padding: 2vw 4vw;
+        width: 80%;
+        max-width: 340px;
+        font-size: clamp(1.05rem, 5.5vw, 1.35rem);
+        padding: clamp(0.8rem, 4vw, 1.1rem) 0;
       }
 
-      /* Гифка сюрприза */
-      .gif-surprise {
-        width: 60vw;
-        max-width: 250px;
-        margin-top: 20px;
-        border-radius: 15px;
-        display: none;
+      #gameMessage {
+        font-size: clamp(1.15rem, 5.5vw, 1.6rem);
+        min-height: 3.2rem;
+        margin: 1rem 0;
+        font-weight: 500;
+        color: #c71585;
+        opacity: 0;
+        transition: opacity 0.6s ease;
       }
 
-      /* --- Медиа-запрос для больших экранов --- */
-      @media (min-width: 500px) {
-        h1 {
-          font-size: 2rem;
-        }
-        p {
-          font-size: 1.2rem;
-          max-width: 350px;
-        }
-        button {
-          font-size: 1.2rem;
-          padding: 12px 24px;
-        }
+      /* Сердечки — теперь fixed и без влияния на скролл */
+      .heart {
+        position: fixed;
+        z-index: 999;
+        pointer-events: none;
+        will-change: transform, opacity, left, top;
       }
     </style>
   </head>
   <body>
-    <!-- Step 1 -->
     <div class="step active" id="step1">
       <h1>Привет, Катя! 😊</h1>
       <p>
@@ -174,27 +167,25 @@
       <button onclick="nextStep()">Далее</button>
     </div>
 
-    <!-- Step 2 -->
     <div class="step" id="step2">
       <h1>Ты необыкновенна! 🌸</h1>
       <p>
         Твоя доброта и внимание к мелочам делают мир вокруг теплее. Я всегда рад
-        видеть твою улыбку
+        видеть твою улыбку 💕
       </p>
       <button onclick="nextStep()">Далее</button>
     </div>
 
-    <!-- Step 3: Мини-игра -->
     <div class="step" id="step3">
       <h1>Выбери свое настроение!</h1>
       <div class="game-box">
         <button onclick="showMessage('Ты приносишь радость каждому дню! 🌸')">
           Веселая
         </button>
-        <button onclick="showMessage('Твоя забота необыкновенна! 💖')">
+        <button onclick="showMessage('Твоя забота просто необыкновенна! 💖')">
           Заботливая
         </button>
-        <button onclick="showMessage('Наблюдательности просто нет слов) ✨')">
+        <button onclick="showMessage('Наблюдательности просто нет слов ✨')">
           Наблюдательная
         </button>
       </div>
@@ -202,12 +193,11 @@
       <button onclick="nextStep()">Далее</button>
     </div>
 
-    <!-- Step 4: Финал -->
     <div class="step" id="step4">
       <h1>Спасибо, что ты есть! 🌟</h1>
       <p>
-        Каждое твое слово и действие оставляют теплый след. Рад, что могу это
-        видеть 🌸
+        Каждое твое слово и действие оставляют теплый след. Очень рад, что могу
+        это видеть 🌸
       </p>
       <button onclick="showSurprise()">Показать сюрприз!</button>
       <img
@@ -215,6 +205,7 @@
         class="gif-surprise"
         id="surpriseGif"
         alt="Сюрприз! 🎉"
+        height="400px"
       />
     </div>
 
@@ -227,81 +218,61 @@
         currentStep++;
         if (currentStep < steps.length) {
           steps[currentStep].classList.add("active");
-          if (currentStep === 1 || currentStep === 3) generateConfetti();
         }
       }
 
-      // Конфетти
-      function createConfetti() {
-        const colors = ["#FF4D88", "#FFD700", "#FF77AA", "#6C63FF", "#FF6F61"];
-        const confetti = document.createElement("div");
-        confetti.classList.add("confetti");
-        confetti.style.backgroundColor =
-          colors[Math.floor(Math.random() * colors.length)];
-        confetti.style.left = Math.random() * window.innerWidth + "px";
-        confetti.style.top = window.innerHeight + "px";
-        confetti.style.width = 10 + Math.random() * 10 + "px";
-        confetti.style.height = 10 + Math.random() * 10 + "px";
-        document.body.appendChild(confetti);
-        setTimeout(() => confetti.remove(), 3000);
-      }
-
-      function generateConfetti() {
-        for (let i = 0; i < 50; i++) {
-          setTimeout(createConfetti, i * 50);
-        }
-      }
-
-      // Мини-игра
       function showMessage(msg) {
         const el = document.getElementById("gameMessage");
-        el.style.opacity = 0;
-        el.innerText = msg;
-        setTimeout(() => (el.style.opacity = 1), 50);
+        el.style.opacity = "0";
+        el.textContent = msg;
+        setTimeout(() => (el.style.opacity = "1"), 60);
       }
 
-      // Сюрприз (сердечки + конфетти + гифка)
       function showSurprise() {
-        generateConfetti();
         for (let i = 0; i < 30; i++) {
-          setTimeout(createHeart, i * 150);
+          setTimeout(createHeart, i * 120);
         }
-        const gif = document.getElementById("surpriseGif");
-        gif.style.display = "block";
+        document.getElementById("surpriseGif").style.display = "block";
       }
 
       function createHeart() {
         const heart = document.createElement("div");
-        const size = 15 + Math.random() * 15;
-        heart.classList.add("heart");
+        heart.className = "heart";
+        const size = 14 + Math.random() * 20;
         heart.style.width = size + "px";
         heart.style.height = size + "px";
-        heart.style.left = Math.random() * window.innerWidth + "px";
-        heart.style.top = window.innerHeight + "px";
-        heart.style.backgroundColor = "red";
+
+        // Ограничиваем разброс, чтобы не вылетало далеко за края
+        const startX = Math.random() * 80 + 10; // от 10% до 90% ширины экрана
+        heart.style.left = startX + "vw";
+        heart.style.top = "100vh";
+
+        heart.style.background = "red";
         heart.style.transform = "rotate(-45deg)";
 
-        heart.innerHTML = `<div style="width:${size}px;height:${size}px;border-radius:50%;background:red;position:absolute;top:-${size / 2}px;left:0;"></div>
-                     <div style="width:${size}px;height:${size}px;border-radius:50%;background:red;position:absolute;top:0;left:${size / 2}px;"></div>`;
+        heart.innerHTML = `
+        <div style="width:${size}px;height:${size}px;border-radius:50%;background:red;position:absolute;top:-${size / 2}px;left:0;"></div>
+        <div style="width:${size}px;height:${size}px;border-radius:50%;background:red;position:absolute;top:0;left:${size / 2}px;"></div>
+      `;
         document.body.appendChild(heart);
 
         const start = Date.now();
-        const duration = 3000;
-        const startX = parseFloat(heart.style.left);
-        const startY = window.innerHeight;
-        const endY = -50;
+        const duration = 2800 + Math.random() * 2200;
+        const drift = (Math.random() - 0.5) * 60; // умеренный дрейф в стороны
 
         function animate() {
-          const now = Date.now();
-          const progress = (now - start) / duration;
-          if (progress < 1) {
-            heart.style.top = startY + (endY - startY) * progress + "px";
+          const t = (Date.now() - start) / duration;
+          if (t < 1) {
+            heart.style.top = 100 - 180 * t + "vh"; // улетают выше экрана
             heart.style.left =
-              startX + 50 * Math.sin(progress * 3 * progress) + "px";
+              startX + drift * Math.sin(t * Math.PI * 2) + "vw";
+            heart.style.opacity = 1 - t * 0.7;
             requestAnimationFrame(animate);
-          } else heart.remove();
+          } else {
+            heart.remove();
+          }
         }
-        animate();
+        requestAnimationFrame(animate);
       }
     </script>
   </body>
