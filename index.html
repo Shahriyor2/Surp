@@ -12,7 +12,7 @@
         height: 100%;
         overflow-x: hidden;
         overflow-y: auto;
-        scrollbar-gutter: stable both-edges; /* предотвращает прыжки контента */
+        scrollbar-gutter: stable both-edges;
       }
 
       body {
@@ -50,7 +50,7 @@
       }
 
       h1 {
-        font-size: clamp(2.3rem, 10vw, 4.8rem);
+        font-size: clamp(1.9rem, 8vw, 3.8rem);
         color: #d6336c;
         margin: 0.4rem 0 1rem;
         line-height: 1.1;
@@ -147,12 +147,23 @@
         transition: opacity 0.6s ease;
       }
 
-      /* Сердечки — теперь fixed и без влияния на скролл */
       .heart {
         position: fixed;
         z-index: 999;
         pointer-events: none;
         will-change: transform, opacity, left, top;
+      }
+
+      #step4 h1 {
+        font-size: clamp(1.95rem, 8.2vw, 3.6rem);
+        margin: 0.5rem 0 1.1rem;
+      }
+
+      #step4 p {
+        font-size: clamp(1rem, 5.2vw, 1.55rem);
+        max-width: 90vw;
+        line-height: 1.5;
+        margin: 0 auto 1.8rem;
       }
     </style>
   </head>
@@ -179,13 +190,15 @@
     <div class="step" id="step3">
       <h1>Выбери свое настроение!</h1>
       <div class="game-box">
-        <button onclick="showMessage('Ты приносишь радость каждому дню! 🌸')">
+        <button
+          onclick="showMessage('Ты приносишь радость каждому МОЕМУ дню! 🌸')"
+        >
           Веселая
         </button>
         <button onclick="showMessage('Твоя забота просто необыкновенна! 💖')">
           Заботливая
         </button>
-        <button onclick="showMessage('Наблюдательности просто нет слов ✨')">
+        <button onclick="showMessage('Наблюдательности 😏 просто нет слов ✨')">
           Наблюдательная
         </button>
       </div>
@@ -242,8 +255,7 @@
         heart.style.width = size + "px";
         heart.style.height = size + "px";
 
-        // Ограничиваем разброс, чтобы не вылетало далеко за края
-        const startX = Math.random() * 80 + 10; // от 10% до 90% ширины экрана
+        const startX = Math.random() * 80 + 10;
         heart.style.left = startX + "vw";
         heart.style.top = "100vh";
 
@@ -258,12 +270,12 @@
 
         const start = Date.now();
         const duration = 2800 + Math.random() * 2200;
-        const drift = (Math.random() - 0.5) * 60; // умеренный дрейф в стороны
+        const drift = (Math.random() - 0.5) * 60;
 
         function animate() {
           const t = (Date.now() - start) / duration;
           if (t < 1) {
-            heart.style.top = 100 - 180 * t + "vh"; // улетают выше экрана
+            heart.style.top = 100 - 180 * t + "vh";
             heart.style.left =
               startX + drift * Math.sin(t * Math.PI * 2) + "vw";
             heart.style.opacity = 1 - t * 0.7;
